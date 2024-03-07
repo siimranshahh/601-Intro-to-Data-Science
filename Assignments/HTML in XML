@@ -1,1 +1,29 @@
+# HTML in XML:
 
+import zipfile #to unzip the file 
+import pandas as pd
+
+from bs4 import BeautifulSoup #to parse html file
+
+zip_path = 'xml_containing_html.xml.zip'
+xml_path = 'xml_containing_html.xml'
+
+#extracting the xml file:
+with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+    zip_ref.extract('xml_containing_html.xml', '.')    
+
+df = pd.read_xml(xml_path)
+df.head
+
+### Using Beautiful Soup to parse html file
+
+ - final_all('a') to find all anchor tags in the html file
+ - returns number of tags found (len(links))
+
+def links_html(html):
+    soup = BeautifulSoup(html, 'html.parser')
+    links = soup.find_all('a')
+    return len(links)
+
+df['num_links'] = df['content'].apply(links_html)
+df.head(20)
